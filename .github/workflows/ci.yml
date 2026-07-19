@@ -1,0 +1,84 @@
+name: CI – MatchLens AI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Backend ────────────────────────────────────────────────────────────────
+  backend:
+    name: Backend – Lint, Type-check, Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npx vitest run src/tests/unit --reporter=verbose
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/matchlens_test
+          JWT_SECRET: test-secret-key-minimum-32-characters-long
+          JWT_REFRESH_SECRET: test-refresh-secret-key-minimum-32-chars
+          GEMINI_API_KEY: test-key
+
+      - name: Build
+        run: npm run build
+
+  # ─── Frontend ───────────────────────────────────────────────────────────────
+  frontend:
+    name: Frontend – Type-check, Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:5000/api/v1
+          NEXT_PUBLIC_SOCKET_URL: http://localhost:5000
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/.next
+          retention-days: 1
