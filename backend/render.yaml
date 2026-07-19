@@ -5,6 +5,7 @@ services:
     rootDir: backend
     buildCommand: npm install && npm run build
     startCommand: npm start
+    nodeVersion: 20
     envVars:
       - key: NODE_ENV
         value: production
