@@ -37,7 +37,10 @@ class GeminiService {
       const text = result.response.text().trim();
 
       // Strip markdown code fences if present
-      const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+      const cleaned = text
+        .replace(/^```json\s*/i, '')
+        .replace(/```\s*$/i, '')
+        .trim();
       return JSON.parse(cleaned) as T;
     } catch (error) {
       logger.error('Gemini structured generation error:', {

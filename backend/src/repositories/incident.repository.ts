@@ -12,8 +12,13 @@ import { PAGINATION } from '../constants';
 export class IncidentRepository {
   async findAll(filters: IncidentFilters): Promise<PaginatedResult<IIncident>> {
     const {
-      type, severity, status, reportedBy, search,
-      startDate, endDate,
+      type,
+      severity,
+      status,
+      reportedBy,
+      search,
+      startDate,
+      endDate,
       page = PAGINATION.DEFAULT_PAGE,
       limit = PAGINATION.DEFAULT_LIMIT,
       sortBy = 'createdAt',
@@ -82,10 +87,7 @@ export class IncidentRepository {
     return Incident.create(data);
   }
 
-  async updateById(
-    id: string,
-    update: mongoose.UpdateQuery<IIncident>
-  ): Promise<IIncident | null> {
+  async updateById(id: string, update: mongoose.UpdateQuery<IIncident>): Promise<IIncident | null> {
     return Incident.findByIdAndUpdate(id, update, { new: true, runValidators: true });
   }
 

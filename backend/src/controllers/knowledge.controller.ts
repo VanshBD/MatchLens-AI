@@ -8,7 +8,10 @@ export class KnowledgeController {
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const page = Number(req.query.page) || PAGINATION.DEFAULT_PAGE;
-      const limit = Math.min(Number(req.query.limit) || PAGINATION.DEFAULT_LIMIT, PAGINATION.MAX_LIMIT);
+      const limit = Math.min(
+        Number(req.query.limit) || PAGINATION.DEFAULT_LIMIT,
+        PAGINATION.MAX_LIMIT
+      );
       const skip = (page - 1) * limit;
 
       const query: mongoose.FilterQuery<typeof KnowledgeBase> = { isActive: true };

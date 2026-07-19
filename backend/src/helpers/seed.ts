@@ -12,11 +12,26 @@ import { KnowledgeBase } from '../models/KnowledgeBase.model';
 import { env } from '../config/env';
 
 const demoUsers = [
-  { name: 'Admin User',    email: 'admin@matchlens.ai',     password: 'Admin@1234',     role: 'admin' },
-  { name: 'Jane Organizer', email: 'organizer@matchlens.ai', password: 'Organizer@1234', role: 'organizer' },
-  { name: 'Sam Security',  email: 'security@matchlens.ai',  password: 'Security@1234',  role: 'security' },
-  { name: 'Dr. Medina',    email: 'medical@matchlens.ai',   password: 'Medical@1234',   role: 'medical' },
-  { name: 'Val Volunteer', email: 'volunteer@matchlens.ai', password: 'Volunteer@1234', role: 'volunteer' },
+  { name: 'Admin User', email: 'admin@matchlens.ai', password: 'Admin@1234', role: 'admin' },
+  {
+    name: 'Jane Organizer',
+    email: 'organizer@matchlens.ai',
+    password: 'Organizer@1234',
+    role: 'organizer',
+  },
+  {
+    name: 'Sam Security',
+    email: 'security@matchlens.ai',
+    password: 'Security@1234',
+    role: 'security',
+  },
+  { name: 'Dr. Medina', email: 'medical@matchlens.ai', password: 'Medical@1234', role: 'medical' },
+  {
+    name: 'Val Volunteer',
+    email: 'volunteer@matchlens.ai',
+    password: 'Volunteer@1234',
+    role: 'volunteer',
+  },
 ];
 
 const knowledgeDocs = [

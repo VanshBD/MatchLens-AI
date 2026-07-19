@@ -2,12 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { incidentService } from '../services/incident.service';
 import { lostChildService } from '../services/lostChild.service';
 import { medicalService } from '../services/medical.service';
-import {
-  sendSuccess,
-  sendCreated,
-  sendNotFound,
-  sendError,
-} from '../utils/response';
+import { sendSuccess, sendCreated, sendNotFound } from '../utils/response';
 import { HTTP_STATUS } from '../constants';
 import mongoose from 'mongoose';
 

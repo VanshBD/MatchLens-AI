@@ -35,15 +35,7 @@ router.post(
   validate(createKbSchema),
   knowledgeController.create
 );
-router.put(
-  '/:id',
-  authorize(USER_ROLES.ADMIN, USER_ROLES.ORGANIZER),
-  knowledgeController.update
-);
-router.delete(
-  '/:id',
-  authorize(USER_ROLES.ADMIN),
-  knowledgeController.remove
-);
+router.put('/:id', authorize(USER_ROLES.ADMIN, USER_ROLES.ORGANIZER), knowledgeController.update);
+router.delete('/:id', authorize(USER_ROLES.ADMIN), knowledgeController.remove);
 
 export default router;

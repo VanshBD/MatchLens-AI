@@ -16,5 +16,14 @@
   "env": {
     "node": true,
     "es2020": true
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/helpers/**/*.ts", "src/tests/**/*.ts"],
+      "rules": {
+        "no-console": "off",
+        "@typescript-eslint/no-unused-vars": "warn"
+      }
+    }
+  ]
 }

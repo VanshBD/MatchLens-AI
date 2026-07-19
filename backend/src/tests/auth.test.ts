@@ -32,9 +32,7 @@ describe('Auth API', () => {
     });
 
     it('should validate required fields', async () => {
-      const res = await request(app)
-        .post('/api/v1/auth/register')
-        .send({ email: 'invalid-email' });
+      const res = await request(app).post('/api/v1/auth/register').send({ email: 'invalid-email' });
       expect(res.status).toBe(400);
       expect(res.body.success).toBe(false);
     });

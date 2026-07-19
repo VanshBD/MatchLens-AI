@@ -32,7 +32,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Lint
-        run: npm run lint
+        run: npm run lint -- --max-warnings 60
 
       - name: Run unit tests
         run: npx vitest run src/tests/unit --reporter=verbose

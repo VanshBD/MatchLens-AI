@@ -74,7 +74,4 @@ knowledgeBaseSchema.index({ category: 1, isActive: 1 });
 knowledgeBaseSchema.index({ tags: 1 });
 knowledgeBaseSchema.index({ title: 'text', content: 'text' });
 
-export const KnowledgeBase = mongoose.model<IKnowledgeBase>(
-  'KnowledgeBase',
-  knowledgeBaseSchema
-);
+export const KnowledgeBase = mongoose.model<IKnowledgeBase>('KnowledgeBase', knowledgeBaseSchema);

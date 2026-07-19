@@ -10,7 +10,12 @@ import { env } from './config/env';
 import { logger } from './config/logger';
 import { globalRateLimit } from './middlewares/rateLimit.middleware';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware';
-import { requestId, sanitizeInput, additionalSecurityHeaders, securityLogger } from './middlewares/security.middleware';
+import {
+  requestId,
+  sanitizeInput,
+  additionalSecurityHeaders,
+  securityLogger,
+} from './middlewares/security.middleware';
 import { responseTime } from './middlewares/performance.middleware';
 import routes from './routes';
 
@@ -23,22 +28,24 @@ app.use(requestId);
 app.use(responseTime);
 
 // ─── Security ─────────────────────────────────────────────────────────────────
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      frameSrc: ["'none'"],
-      upgradeInsecureRequests: [],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
     },
-  },
-  crossOriginEmbedderPolicy: false, // needed for Swagger UI
-}));
+    crossOriginEmbedderPolicy: false, // needed for Swagger UI
+  })
+);
 app.use(additionalSecurityHeaders);
 app.use(
   cors({
@@ -91,8 +98,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
     info: {
       title: 'MatchLens AI - Volunteer Copilot API',
       version: '1.0.0',
-      description:
-        'AI-powered smart stadium operations platform for FIFA World Cup 2026',
+      description: 'AI-powered smart stadium operations platform for FIFA World Cup 2026',
       contact: {
         name: 'MatchLens AI Team',
       },

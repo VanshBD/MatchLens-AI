@@ -21,11 +21,7 @@ router.get('/stats', incidentController.getStats);
 router.get('/:id', incidentController.getById);
 
 // Status update — all roles can update their own, organizer/security/admin can update any
-router.put(
-  '/:id/status',
-  validate(updateIncidentStatusSchema),
-  incidentController.updateStatus
-);
+router.put('/:id/status', validate(updateIncidentStatusSchema), incidentController.updateStatus);
 
 // Assignment — only organizer, security, admin
 router.put(
@@ -35,11 +31,7 @@ router.put(
 );
 
 // Lost child — all roles can report, security has additional access
-router.post(
-  '/lost-child',
-  validate(createLostChildSchema),
-  incidentController.createLostChild
-);
+router.post('/lost-child', validate(createLostChildSchema), incidentController.createLostChild);
 router.get('/lost-child/active', incidentController.getLostChildCases);
 router.post('/lost-child/announcements', incidentController.generateAnnouncements);
 

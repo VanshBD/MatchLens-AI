@@ -10,11 +10,7 @@ const devFormat = combine(
   simple()
 );
 
-const prodFormat = combine(
-  timestamp(),
-  errors({ stack: true }),
-  json()
-);
+const prodFormat = combine(timestamp(), errors({ stack: true }), json());
 
 export const logger = winston.createLogger({
   level: env.LOG_LEVEL,

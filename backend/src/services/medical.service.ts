@@ -36,10 +36,7 @@ export interface CreateMedicalIncidentInput {
 
 class MedicalService {
   async analyzeEmergency(description: string): Promise<MedicalAiResponse> {
-    return geminiService.generateStructured<MedicalAiResponse>(
-      MEDICAL_SYSTEM_PROMPT,
-      description
-    );
+    return geminiService.generateStructured<MedicalAiResponse>(MEDICAL_SYSTEM_PROMPT, description);
   }
 
   async createIncident(input: CreateMedicalIncidentInput) {

@@ -97,8 +97,9 @@ class AuthService {
     ipAddress?: string,
     userAgent?: string
   ): Promise<{ user: IUser; tokens: TokenPair }> {
-    const user = await User.findOne({ email: input.email.toLowerCase() })
-      .select('+password +refreshToken');
+    const user = await User.findOne({ email: input.email.toLowerCase() }).select(
+      '+password +refreshToken'
+    );
 
     if (!user || !(await user.comparePassword(input.password))) {
       await AuditLog.create({
@@ -136,9 +137,7 @@ class AuthService {
     return { user, tokens };
   }
 
-  async refreshTokens(
-    refreshToken: string
-  ): Promise<TokenPair> {
+  async refreshTokens(refreshToken: string): Promise<TokenPair> {
     const payload = this.verifyRefreshToken(refreshToken);
     if (payload.type !== 'refresh') throw new Error('Invalid token type');
 
@@ -165,11 +164,7 @@ class AuthService {
     });
   }
 
-  async changePassword(
-    userId: string,
-    oldPassword: string,
-    newPassword: string
-  ): Promise<void> {
+  async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<void> {
     const user = await User.findById(userId).select('+password');
     if (!user) throw new Error('User not found');
 

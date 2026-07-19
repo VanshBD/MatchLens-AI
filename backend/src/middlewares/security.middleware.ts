@@ -70,9 +70,9 @@ export function securityLogger(req: Request, _res: Response, next: NextFunction)
   const suspiciousPatterns = [
     /<script/i,
     /javascript:/i,
-    /on\w+\s*=/i,         // onclick= onerror= etc
-    /union\s+select/i,    // SQL injection
-    /\.\.\//,             // path traversal
+    /on\w+\s*=/i, // onclick= onerror= etc
+    /union\s+select/i, // SQL injection
+    /\.\.\//, // path traversal
   ];
 
   const bodyStr = JSON.stringify(req.body || {});

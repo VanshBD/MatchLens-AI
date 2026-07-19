@@ -23,11 +23,7 @@ export class AuthController {
 
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { user, tokens } = await authService.login(
-        req.body,
-        req.ip,
-        req.headers['user-agent']
-      );
+      const { user, tokens } = await authService.login(req.body, req.ip, req.headers['user-agent']);
       sendSuccess(res, { user, tokens }, 'Login successful');
     } catch (error) {
       if (error instanceof Error) {

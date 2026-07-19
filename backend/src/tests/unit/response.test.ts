@@ -5,8 +5,14 @@ function mockRes() {
   const res = {
     _status: 0,
     _body: {} as unknown,
-    status(code: number) { this._status = code; return this; },
-    json(body: unknown) { this._body = body; return this; },
+    status(code: number) {
+      this._status = code;
+      return this;
+    },
+    json(body: unknown) {
+      this._body = body;
+      return this;
+    },
   };
   return res;
 }
@@ -24,7 +30,14 @@ describe('Response utilities', () => {
 
     it('includes pagination when provided', () => {
       const res = mockRes();
-      const pagination = { total: 100, page: 1, limit: 20, totalPages: 5, hasNext: true, hasPrev: false };
+      const pagination = {
+        total: 100,
+        page: 1,
+        limit: 20,
+        totalPages: 5,
+        hasNext: true,
+        hasPrev: false,
+      };
       sendSuccess(res as never, [], 'List', 200, pagination);
       expect((res._body as { pagination: typeof pagination }).pagination).toEqual(pagination);
     });

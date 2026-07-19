@@ -7,8 +7,14 @@ function makeReqRes(body: unknown, query: unknown = {}, params: unknown = {}) {
   let statusCode = 0;
   let jsonBody: unknown;
   const res = {
-    status: vi.fn().mockImplementation((code: number) => { statusCode = code; return res; }),
-    json: vi.fn().mockImplementation((body: unknown) => { jsonBody = body; return res; }),
+    status: vi.fn().mockImplementation((code: number) => {
+      statusCode = code;
+      return res;
+    }),
+    json: vi.fn().mockImplementation((body: unknown) => {
+      jsonBody = body;
+      return res;
+    }),
     _getStatus: () => statusCode,
     _getJson: () => jsonBody,
   };
@@ -35,7 +41,10 @@ describe('Validate Middleware', () => {
     const { req, res, next } = makeReqRes({ name: 'J', email: 'not-an-email' });
     await validate(schema)(req as never, res as never, next);
     expect(res.status).toHaveBeenCalledWith(400);
-    const json = res._getJson() as { success: boolean; details: { field: string; message: string }[] };
+    const json = res._getJson() as {
+      success: boolean;
+      details: { field: string; message: string }[];
+    };
     expect(json.success).toBe(false);
     expect(json.details).toBeDefined();
     expect(json.details.length).toBeGreaterThan(0);

@@ -84,9 +84,7 @@ class Retriever {
           title: doc.title,
           content: doc.content,
           category: doc.category,
-          score: doc.embedding
-            ? geminiService.cosineSimilarity(queryEmbedding, doc.embedding)
-            : 0,
+          score: doc.embedding ? geminiService.cosineSimilarity(queryEmbedding, doc.embedding) : 0,
         }))
         .filter((d) => d.score >= this.SIMILARITY_THRESHOLD)
         .sort((a, b) => b.score - a.score)
@@ -108,10 +106,7 @@ class Retriever {
     if (documents.length === 0) return '';
 
     return documents
-      .map(
-        (doc, i) =>
-          `[${i + 1}] ${doc.title} (${doc.category})\n${doc.content.slice(0, 1000)}`
-      )
+      .map((doc, i) => `[${i + 1}] ${doc.title} (${doc.category})\n${doc.content.slice(0, 1000)}`)
       .join('\n\n---\n\n');
   }
 

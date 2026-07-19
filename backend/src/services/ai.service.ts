@@ -1,15 +1,9 @@
 import { geminiService } from '../ai/gemini.service';
 import { CROWD_SYSTEM_PROMPT } from '../prompts/crowd.prompt';
 import { ACCESSIBILITY_SYSTEM_PROMPT } from '../prompts/accessibility.prompt';
-import {
-  TRANSLATION_SYSTEM_PROMPT,
-  QUICK_TRANSLATION_PROMPT,
-} from '../prompts/translation.prompt';
+import { TRANSLATION_SYSTEM_PROMPT, QUICK_TRANSLATION_PROMPT } from '../prompts/translation.prompt';
 import { INCIDENT_SUMMARIZER_PROMPT } from '../prompts/summarizer.prompt';
-import {
-  KNOWLEDGE_ASSISTANT_SYSTEM_PROMPT,
-  RAG_CONTEXT_PROMPT,
-} from '../prompts/knowledge.prompt';
+import { KNOWLEDGE_ASSISTANT_SYSTEM_PROMPT, RAG_CONTEXT_PROMPT } from '../prompts/knowledge.prompt';
 import { KnowledgeBase } from '../models/KnowledgeBase.model';
 import { AiChat } from '../models/AiChat.model';
 import { AI_MODULE_TYPES } from '../constants';
@@ -66,19 +60,28 @@ class AiService {
     // Use cache for repeated queries (5 min TTL)
     const cacheKey = `kb:${Buffer.from(question).toString('base64').slice(0, 40)}`;
 
-    const response = await withCache(cacheKey, async () => {
-      // Use RAG retriever
-      const ragContext = await retriever.retrieve(question);
+    const response = await withCache(
+      cacheKey,
+      async () => {
+        // Use RAG retriever
+        const ragContext = await retriever.retrieve(question);
 
-      if (ragContext.hasResults) {
-        const prompt = RAG_CONTEXT_PROMPT(ragContext.contextText, question);
-        return geminiService.generateStructured('', prompt);
-      }
-      return geminiService.generateStructured(KNOWLEDGE_ASSISTANT_SYSTEM_PROMPT, question);
-    }, 300); // cache 5 minutes
+        if (ragContext.hasResults) {
+          const prompt = RAG_CONTEXT_PROMPT(ragContext.contextText, question);
+          return geminiService.generateStructured('', prompt);
+        }
+        return geminiService.generateStructured(KNOWLEDGE_ASSISTANT_SYSTEM_PROMPT, question);
+      },
+      300
+    ); // cache 5 minutes
 
     // Save chat history (don't cache this)
-    await this.saveChatMessage(userId, AI_MODULE_TYPES.KNOWLEDGE, question, JSON.stringify(response));
+    await this.saveChatMessage(
+      userId,
+      AI_MODULE_TYPES.KNOWLEDGE,
+      question,
+      JSON.stringify(response)
+    );
     return response;
   }
 
@@ -103,9 +106,7 @@ class AiService {
     message: string,
     chatId?: string
   ) {
-    let existingChat = chatId
-      ? await AiChat.findById(chatId)
-      : null;
+    let existingChat = chatId ? await AiChat.findById(chatId) : null;
 
     const systemPrompt = this.getSystemPrompt(moduleType);
     let responseText: string;
@@ -143,14 +144,21 @@ class AiService {
 
   private getSystemPrompt(moduleType: string): string {
     const prompts: Record<string, string> = {
-      [AI_MODULE_TYPES.LOST_CHILD]: 'You are a lost child emergency assistant for FIFA World Cup 2026.',
-      [AI_MODULE_TYPES.MEDICAL]: 'You are a medical emergency support assistant for FIFA World Cup 2026.',
+      [AI_MODULE_TYPES.LOST_CHILD]:
+        'You are a lost child emergency assistant for FIFA World Cup 2026.',
+      [AI_MODULE_TYPES.MEDICAL]:
+        'You are a medical emergency support assistant for FIFA World Cup 2026.',
       [AI_MODULE_TYPES.CROWD]: 'You are a crowd management assistant for FIFA World Cup 2026.',
-      [AI_MODULE_TYPES.ACCESSIBILITY]: 'You are an accessibility assistance guide for FIFA World Cup 2026.',
-      [AI_MODULE_TYPES.TRANSLATION]: 'You are a multilingual translation assistant for FIFA World Cup 2026.',
+      [AI_MODULE_TYPES.ACCESSIBILITY]:
+        'You are an accessibility assistance guide for FIFA World Cup 2026.',
+      [AI_MODULE_TYPES.TRANSLATION]:
+        'You are a multilingual translation assistant for FIFA World Cup 2026.',
       [AI_MODULE_TYPES.KNOWLEDGE]: KNOWLEDGE_ASSISTANT_SYSTEM_PROMPT,
     };
-    return prompts[moduleType] || 'You are a helpful stadium operations assistant for FIFA World Cup 2026.';
+    return (
+      prompts[moduleType] ||
+      'You are a helpful stadium operations assistant for FIFA World Cup 2026.'
+    );
   }
 
   private async saveChatMessage(

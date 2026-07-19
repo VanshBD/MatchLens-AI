@@ -88,10 +88,6 @@ export function emitToUser(io: SocketServer, userId: string, event: string, data
 }
 
 // Helper to broadcast incident updates
-export function broadcastIncidentUpdate(
-  io: SocketServer,
-  event: string,
-  incident: unknown
-) {
+export function broadcastIncidentUpdate(io: SocketServer, event: string, incident: unknown) {
   io.emit(event, incident);
 }

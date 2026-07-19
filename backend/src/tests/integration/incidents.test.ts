@@ -29,9 +29,7 @@ describe('Incidents API', () => {
 
   describe('GET /api/v1/ai (unauthenticated)', () => {
     it('returns 401 for AI endpoints without token', async () => {
-      const res = await request(app)
-        .post('/api/v1/ai/knowledge')
-        .send({ question: 'test' });
+      const res = await request(app).post('/api/v1/ai/knowledge').send({ question: 'test' });
       expect(res.status).toBe(401);
     });
   });
@@ -55,13 +53,11 @@ describe('Incidents API', () => {
     });
 
     it('validates password strength on register', async () => {
-      const res = await request(app)
-        .post('/api/v1/auth/register')
-        .send({
-          name: 'Test User',
-          email: 'test@example.com',
-          password: 'weakpass',
-        });
+      const res = await request(app).post('/api/v1/auth/register').send({
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'weakpass',
+      });
       expect(res.status).toBe(400);
     });
   });

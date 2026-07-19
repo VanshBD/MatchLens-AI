@@ -5,7 +5,8 @@ import { UserRole } from '../constants';
 import { sendUnauthorized, sendForbidden } from '../utils/response';
 import { logger } from '../config/logger';
 
-// Extend Express Request type
+// Extend Express Request type — namespace is required for Express augmentation
+/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
   namespace Express {
     interface Request {
@@ -18,12 +19,9 @@ declare global {
     }
   }
 }
+/* eslint-enable @typescript-eslint/no-namespace */
 
-export async function authenticate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
+export async function authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
